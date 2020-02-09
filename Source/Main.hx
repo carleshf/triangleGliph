@@ -11,30 +11,32 @@ import openfl.text.TextFormat;
 
 
 class TriangleGliph	{
-	var content:Array<Int>;
-	var color:Int;
-	var alpha:Float;
-	var grid:Bool;
-	var nelm:Int;
+	var _content:Array<Int>;
+	var _shapes:Array<Shape>;
+	var _color:Int;
+	var _alpha:Float;
+	var _grid:Bool;
+	var _nelm:Int;
 
 	public function new(color = 0x00AAAA, alpha = 0.75, grid = false) {
-		this.content = [];
-		this.color = color;
-		this.alpha = alpha;
-		this.grid = grid;
-		this.nelm = 1;
+		_content = [];
+		_shapes = [];
+		_color = color;
+		_alpha = alpha;
+		_grid = grid;
+		_nelm = 1;
 	}
 
 	public function setGrid(status) {
-		this.grid = status;
+		_grid = status;
 	}
 
 	public function setColor(color) {
-		this.color = color;
+		_color = color;
 	}
 
 	public function setAlpha(alpha) {
-		this.alpha = alpha;
+		_alpha = alpha;
 	}
 
 	private function drawGrid(canvas, offsetX, offsetY, gap, size) {
@@ -54,173 +56,166 @@ class TriangleGliph	{
 		canvas.addChild(drawer);
 	}
 	
-	private function drawCloseTriangle(canvas, offsetX, offsetY, gap, size) {
+	private function drawCloseTriangle(canvas:Sprite, oX:Int, oY:Int, gap:Int, stroke:Int):Shape {
 		var triangle = new Shape ();
-		triangle.graphics.lineStyle (size, color, alpha);
-		
-		triangle.graphics.moveTo(offsetX + gap + (size / 2), offsetY + (gap * 5) + (size / 2));
-		triangle.graphics.lineTo(offsetX + (gap * 3) + (size / 2), offsetY +  gap + (size / 2));
-		triangle.graphics.lineTo(offsetX + (gap * 5) + (size / 2), offsetY +  (gap * 5) + (size / 2));
-		triangle.graphics.lineTo(offsetX + gap + (size / 2), offsetY +  (gap * 5) + (size / 2));
-		
+		triangle.graphics.lineStyle (stroke, _color, _alpha);
+		triangle.graphics.moveTo(oX + gap + (stroke / 2), oY + (gap * 5) + (stroke / 2));
+		triangle.graphics.lineTo(oX + (gap * 3) + (stroke / 2), oY +  gap + (stroke / 2));
+		triangle.graphics.lineTo(oX + (gap * 5) + (stroke / 2), oY +  (gap * 5) + (stroke / 2));
+		triangle.graphics.lineTo(oX + gap + (stroke / 2), oY +  (gap * 5) + (stroke / 2));
 		canvas.addChild(triangle);
+		return triangle;
 	}
 
-	private function drawOpenTriangle(canvas, offsetX, offsetY, gap, size) {
+	private function drawOpenTriangle(canvas:Sprite, oX:Int, oY:Int, gap:Int, stroke:Int):Shape {
 		var triangle = new Shape ();
-		triangle.graphics.lineStyle (size, color, alpha);
-		
-		triangle.graphics.moveTo(offsetX + gap + (size / 2), offsetY + (gap * 5) + (size / 2));
-		triangle.graphics.lineTo(offsetX + (gap * 3) + (size / 2), offsetY + gap + (size / 2));
-		triangle.graphics.lineTo(offsetX + (gap * 5) + (size / 2), offsetY + (gap * 5) + (size / 2));
-		
+		triangle.graphics.lineStyle (stroke, _color, _alpha);
+		triangle.graphics.moveTo(oX + gap + (stroke / 2), oY + (gap * 5) + (stroke / 2));
+		triangle.graphics.lineTo(oX + (gap * 3) + (stroke / 2), oY + gap + (stroke / 2));
+		triangle.graphics.lineTo(oX + (gap * 5) + (stroke / 2), oY + (gap * 5) + (stroke / 2));
 		canvas.addChild(triangle);
+		return triangle;
 	}
 
-	private function drawCeilingLine(canvas, offsetX, offsetY, gap, size) {
+	private function drawCeilingLine(canvas, oX:Int, oY:Int, gap:Int, stroke:Int):Shape {
 		var triangle = new Shape ();
-		triangle.graphics.lineStyle (size, color, alpha);
-		
-		triangle.graphics.moveTo(offsetX + gap + (size / 2), offsetY + gap + (size / 2));
-		triangle.graphics.lineTo(offsetX + (gap * 5) + (size / 2), offsetY + gap + (size / 2));
-		
+		triangle.graphics.lineStyle (stroke, _color, _alpha);
+		triangle.graphics.moveTo(oX + gap + (stroke / 2), oY + gap + (stroke / 2));
+		triangle.graphics.lineTo(oX + (gap * 5) + (stroke / 2), oY + gap + (stroke / 2));
 		canvas.addChild(triangle);
+		return triangle;
 	}
 
-	private function drawBeltLine(canvas, offsetX, offsetY, gap, size) {
+	private function drawBeltLine(canvas:Sprite, oX:Int, oY:Int, gap:Int, stroke:Int):Shape {
 		var triangle = new Shape ();
-		triangle.graphics.lineStyle (size, color, alpha);
-		
-		triangle.graphics.moveTo(offsetX + (gap * 2) + (size / 2), offsetY + (gap * 3) + (size / 2));
-		triangle.graphics.lineTo(offsetX + (gap * 4) + (size / 2), offsetY + (gap * 3) + (size / 2));
-		
+		triangle.graphics.lineStyle (stroke, _color, _alpha);
+		triangle.graphics.moveTo(oX + (gap * 2) + (stroke / 2), oY + (gap * 3) + (stroke / 2));
+		triangle.graphics.lineTo(oX + (gap * 4) + (stroke / 2), oY + (gap * 3) + (stroke / 2));
 		canvas.addChild(triangle);
+		return triangle;
 	}
 
-	private function drawLanceLine(canvas, offsetX, offsetY, gap, size) {
+	private function drawLanceLine(canvas:Sprite, oX:Int, oY:Int, gap:Int, stroke:Int):Shape {
 		var triangle = new Shape ();
-		triangle.graphics.lineStyle (size, color, alpha);
-		
-		triangle.graphics.moveTo(offsetX + (gap * 5) + (size / 2), offsetY + (gap * 3) + (size / 2));
-		triangle.graphics.lineTo(offsetX + gap + (size / 2), offsetY + (gap * 3) + (size / 2));
-		
+		triangle.graphics.lineStyle (stroke, _color, _alpha);
+		triangle.graphics.moveTo(oX + (gap * 5) + (stroke / 2), oY + (gap * 3) + (stroke / 2));
+		triangle.graphics.lineTo(oX + gap + (stroke / 2), oY + (gap * 3) + (stroke / 2));
 		canvas.addChild(triangle);
+		return triangle;
 	}
 
-	private function drawLegLine(canvas, offsetX, offsetY, gap, size) {
+	private function drawLegLine(canvas:Sprite, oX:Int, oY:Int, gap:Int, stroke:Int):Shape {
 		var triangle = new Shape ();
-		triangle.graphics.lineStyle (size, color, alpha);
-		
-		triangle.graphics.moveTo(offsetX + (gap * 3) + (size / 2), offsetY + (gap * 3) + (size / 2));
-		triangle.graphics.lineTo(offsetX + (gap * 3) + (size / 2), offsetY + (gap * 5) + (size / 2));
-		
+		triangle.graphics.lineStyle (stroke, _color, _alpha);
+		triangle.graphics.moveTo(oX + (gap * 3) + (stroke / 2), oY + (gap * 3) + (stroke / 2));
+		triangle.graphics.lineTo(oX + (gap * 3) + (stroke / 2), oY + (gap * 5) + (stroke / 2));
 		canvas.addChild(triangle);
+		return triangle;
 	}
 
-	private function drawSadLine(canvas, offsetX, offsetY, gap, size) {
+	private function drawSadLine(canvas:Sprite, oX:Int, oY:Int, gap:Int, stroke:Int):Shape {
 		var triangle = new Shape ();
-		triangle.graphics.lineStyle (size, color, alpha);
-		
-		triangle.graphics.moveTo(offsetX + (gap * 2) + (size / 2), offsetY + (gap * 5) + (size / 2));
-		triangle.graphics.lineTo(offsetX + (gap * 3) + (size / 2), offsetY + (gap * 4) + (size / 2));
-		triangle.graphics.lineTo(offsetX + (gap * 4) + (size / 2), offsetY + (gap * 5) + (size / 2));
-		
+		triangle.graphics.lineStyle (stroke, _color, _alpha);
+		triangle.graphics.moveTo(oX + (gap * 2) + (stroke / 2), oY + (gap * 5) + (stroke / 2));
+		triangle.graphics.lineTo(oX + (gap * 3) + (stroke / 2), oY + (gap * 4) + (stroke / 2));
+		triangle.graphics.lineTo(oX + (gap * 4) + (stroke / 2), oY + (gap * 5) + (stroke / 2));
 		canvas.addChild(triangle);
+		return triangle;
 	}
 
-	private function drawHappyLine(canvas, offsetX, offsetY, gap, size) {
+	private function drawHappyLine(canvas:Sprite, oX:Int, oY:Int, gap:Int, stroke:Int):Shape {
 		var triangle = new Shape ();
-		triangle.graphics.lineStyle (size, color, alpha);
-		
-		triangle.graphics.moveTo(offsetX + (gap * 2) + (size / 2), offsetY + (gap * 4) + (size / 2));
-		triangle.graphics.lineTo(offsetX + (gap * 3) + (size / 2), offsetY + (gap * 5) + (size / 2));
-		triangle.graphics.lineTo(offsetX + (gap * 4) + (size / 2), offsetY + (gap * 4) + (size / 2));
-		
+		triangle.graphics.lineStyle (stroke, _color, _alpha);
+		triangle.graphics.moveTo(oX + (gap * 2) + (stroke / 2), oY + (gap * 4) + (stroke / 2));
+		triangle.graphics.lineTo(oX + (gap * 3) + (stroke / 2), oY + (gap * 5) + (stroke / 2));
+		triangle.graphics.lineTo(oX + (gap * 4) + (stroke / 2), oY + (gap * 4) + (stroke / 2));
 		canvas.addChild(triangle);
+		return triangle;
 	}
 
-	private function drawSadLargeLine(canvas, offsetX, offsetY, gap, size) {
+	private function drawSadLargeLine(canvas:Sprite, oX:Int, oY:Int, gap:Int, stroke:Int):Shape {
 		var triangle = new Shape ();
-		triangle.graphics.lineStyle (size, color, alpha);
-		
-		triangle.graphics.moveTo(offsetX + (gap * 2) + (size / 2), offsetY + (gap * 5) + (size / 2));
-		triangle.graphics.lineTo(offsetX + (gap * 3) + (size / 2), offsetY + (gap * 3) + (size / 2));
-		triangle.graphics.lineTo(offsetX + (gap * 4) + (size / 2), offsetY + (gap * 5) + (size / 2));
-		
+		triangle.graphics.lineStyle (stroke, _color, _alpha);
+		triangle.graphics.moveTo(oX + (gap * 2) + (stroke / 2), oY + (gap * 5) + (stroke / 2));
+		triangle.graphics.lineTo(oX + (gap * 3) + (stroke / 2), oY + (gap * 3) + (stroke / 2));
+		triangle.graphics.lineTo(oX + (gap * 4) + (stroke / 2), oY + (gap * 5) + (stroke / 2));
 		canvas.addChild(triangle);
+		return triangle;
 	}
 
-	private function drawHappyLargeLine(canvas, offsetX, offsetY, gap, size) {
+	private function drawHappyLargeLine(canvas:Sprite, oX:Int, oY:Int, gap:Int, stroke:Int):Shape {
 		var triangle = new Shape ();
-		triangle.graphics.lineStyle (size, color, alpha);
-		
-		triangle.graphics.moveTo(offsetX + (gap * 2) + (size / 2), offsetY + (gap * 3) + (size / 2));
-		triangle.graphics.lineTo(offsetX + (gap * 3) + (size / 2), offsetY + (gap * 5) + (size / 2));
-		triangle.graphics.lineTo(offsetX + (gap * 4) + (size / 2), offsetY + (gap * 3) + (size / 2));
-		
+		triangle.graphics.lineStyle (stroke, _color, _alpha);
+		triangle.graphics.moveTo(oX + (gap * 2) + (stroke / 2), oY + (gap * 3) + (stroke / 2));
+		triangle.graphics.lineTo(oX + (gap * 3) + (stroke / 2), oY + (gap * 5) + (stroke / 2));
+		triangle.graphics.lineTo(oX + (gap * 4) + (stroke / 2), oY + (gap * 3) + (stroke / 2));
 		canvas.addChild(triangle);
+		return triangle;
 	}
 
-	private function drawDiagonalDownLine(canvas, offsetX, offsetY, gap, size) {
+	private function drawDiagonalDownLine(canvas:Sprite, oX:Int, oY:Int, gap:Int, stroke:Int):Shape {
 		var triangle = new Shape ();
-		triangle.graphics.lineStyle (size, color, alpha);
-		
-		triangle.graphics.moveTo(offsetX + (gap * 2) + (size / 2), offsetY + (gap * 3) + (size / 2));
-		triangle.graphics.lineTo(offsetX + (gap * 3) + (size / 2), offsetY + (gap * 5) + (size / 2));
-		
+		triangle.graphics.lineStyle (stroke, _color, _alpha);
+		triangle.graphics.moveTo(oX + (gap * 2) + (stroke / 2), oY + (gap * 3) + (stroke / 2));
+		triangle.graphics.lineTo(oX + (gap * 3) + (stroke / 2), oY + (gap * 5) + (stroke / 2));
 		canvas.addChild(triangle);
+		return triangle;
 	}
 
-	private function drawDiagonalUpLine(canvas, offsetX, offsetY, gap, size) {
+	private function drawDiagonalUpLine(canvas:Sprite, oX:Int, oY:Int, gap:Int, stroke:Int):Shape {
 		var triangle = new Shape ();
-		triangle.graphics.lineStyle (size, color, alpha);
-		
-		triangle.graphics.moveTo(offsetX + (gap * 3) + (size / 2), offsetY + (gap * 5) + (size / 2));
-		triangle.graphics.lineTo(offsetX + (gap * 4) + (size / 2), offsetY + (gap * 3) + (size / 2));
-		
+		triangle.graphics.lineStyle (stroke, _color, _alpha);
+		triangle.graphics.moveTo(oX + (gap * 3) + (stroke / 2), oY + (gap * 5) + (stroke / 2));
+		triangle.graphics.lineTo(oX + (gap * 4) + (stroke / 2), oY + (gap * 3) + (stroke / 2));
 		canvas.addChild(triangle);
+		return triangle;
 	}
 
-	public function draw(canvas, offsetX, offsetY, gap, size) {
-		if(grid) {
-			drawGrid(canvas, offsetX, offsetY, gap, size);
+	public function clean(canvas:Sprite) {
+		for(part in _shapes) {
+			canvas.removeChild(part);
 		}
-		for(elm in content) {
+		_shapes = [];
+	}
+
+	public function draw(canvas:Sprite, oX:Int, oY:Int, gap:Int, stroke:Int) {
+		if(_grid) {
+			drawGrid(canvas, oX, oY, gap, stroke);
+		}
+		for(elm in _content) {
+			var part:Shape = null;
 			switch (elm) {
 				case 0:
-					drawCloseTriangle(canvas, offsetX, offsetY, gap, size);
+					part = drawCloseTriangle(canvas, oX, oY, gap, stroke);
 				case 1:
-					drawOpenTriangle(canvas, offsetX, offsetY, gap, size);
+					part = drawOpenTriangle(canvas, oX, oY, gap, stroke);
 				case 2:
-					drawCeilingLine(canvas, offsetX, offsetY, gap, size);
+					part = drawCeilingLine(canvas, oX, oY, gap, stroke);
 				case 3:
-					drawBeltLine(canvas, offsetX, offsetY, gap, size);
+					part = drawBeltLine(canvas, oX, oY, gap, stroke);
 				case 4:
-					drawLanceLine(canvas, offsetX, offsetY, gap, size);
+					part = drawLanceLine(canvas, oX, oY, gap, stroke);
 				case 5:
-					drawSadLine(canvas, offsetX, offsetY, gap, size);
+					part = drawSadLine(canvas, oX, oY, gap, stroke);
 				case 6:
-					drawHappyLine(canvas, offsetX, offsetY, gap, size);
+					part = drawHappyLine(canvas, oX, oY, gap, stroke);
 				case 7:
-					drawSadLargeLine(canvas, offsetX, offsetY, gap, size);
+					part = drawSadLargeLine(canvas, oX, oY, gap, stroke);
 				case 8:
-					drawHappyLargeLine(canvas, offsetX, offsetY, gap, size);
+					part = drawHappyLargeLine(canvas, oX, oY, gap, stroke);
 				case 9:
-					drawLegLine(canvas, offsetX, offsetY, gap, size);
+					part = drawLegLine(canvas, oX, oY, gap, stroke);
 				case 10:
-					drawDiagonalDownLine(canvas, offsetX, offsetY, gap, size);
+					part = drawDiagonalDownLine(canvas, oX, oY, gap, stroke);
 				case 11:
-					drawDiagonalUpLine(canvas, offsetX, offsetY, gap, size);
+					part = drawDiagonalUpLine(canvas, oX, oY, gap, stroke);
 			}
+			_shapes.push(part);
 		}
 	}
 
 	public function print() {
-		trace(content);
-	}
-
-	public function add(elm:Int){
-		content.push(elm);
+		trace(_content);
 	}
 
 	public function generate() {
@@ -289,9 +284,9 @@ class TriangleGliph	{
 
 		// 1. Select border
 		if(Math.random() <= 0.1) {
-			add(1);
+			_content.push(1);
 		} else {
-			add(0);
+			_content.push(0);
 		}
 
 		// 2. Select number of elements to add
@@ -304,9 +299,9 @@ class TriangleGliph	{
 
 		// 3. Fill the glyph
 		var elmsToAdd = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-		for(ii in 0...nelm) {
+		for(ii in 0..._nelm) {
 			var val = Std.random(elmsToAdd.length - 1);
-			add(elmsToAdd[val]);
+			_content.push(elmsToAdd[val]);
 			elmsToAdd = updateToAddArray(elmsToAdd[val], elmsToAdd);
 		}
 	}
@@ -384,11 +379,8 @@ class Main extends Sprite {
 
 	public function new() {
 		super();
-
-		//this.mouseChildren = false;
-		//this.buttonMode = true;
-
 		init();
+		this.removeChild
 	}
 
 	public function init() {
@@ -396,13 +388,12 @@ class Main extends Sprite {
 		//drawPieces(this, 10, 10, 50, 6, 2);
 
 		drawRandom(this, 10, 160, 50, 6, 2, 5, 10);
-		function onButtonClick(e:MouseEvent) {
-			trace('you clicked me!');
+		function callbackDrawRandom(e:MouseEvent) {
 			drawRandom(this, 10, 160, 50, 6, 2, 5, 10);
 		}
 
 		var x = new Button(this, 10, 250, "hello");
-		x.addCallback(this, onButtonClick);
+		x.addCallback(this, callbackDrawRandom);
 
 	}
 }
