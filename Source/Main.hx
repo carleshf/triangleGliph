@@ -1,13 +1,15 @@
 package;
 
-import haxe.Constraints.Function;
+//import haxe.Constraints.Function;
 import haxe.macro.Compiler.IncludePosition;
 import openfl.display.Sprite;
 import openfl.display.Shape;
 import openfl.events.MouseEvent;
-import openfl.text.Font;
+//import openfl.text.Font;
 import openfl.text.TextField;
 import openfl.text.TextFormat;
+import openfl.Assets;
+
 
 
 class TriangleGliph	{
@@ -25,6 +27,12 @@ class TriangleGliph	{
 		_alpha = alpha;
 		_grid = grid;
 		_nelm = 1;
+	}
+
+	public function addPieceByNum(num:Int) {
+		if(num >= 0 && num <= 11) {
+			_content.push(num);
+		}
 	}
 
 	public function setGrid(status) {
@@ -214,10 +222,6 @@ class TriangleGliph	{
 		}
 	}
 
-	public function print() {
-		trace(_content);
-	}
-
 	public function generate() {
 		/*	Creation of a Triangular Glyph
 			------------------------------
@@ -292,9 +296,9 @@ class TriangleGliph	{
 		// 2. Select number of elements to add
 		var pelm = Math.random();
 		if (pelm <= 0.1) {
-			nelm = 3;
+			_nelm = 3;
 		} else if(pelm <= 0.3) {
-			nelm = 2;
+			_nelm = 2;
 		}
 
 		// 3. Fill the glyph
@@ -310,46 +314,57 @@ class TriangleGliph	{
 class Button extends Sprite {
 	private var _text:TextField;
 
-	public function new(parent:Sprite, px:Int, py:Int, text:String) {
+	public function new(parent:Sprite, px:Int, py:Int, w:Int, text:String) {
 		super();
-
+		this.mouseChildren = false;
+		this.buttonMode = true;
+		// Get the new font
+		var textFieldFormat:TextFormat = new TextFormat(Assets.getFont("fonts/DANUBE__.TTF").fontName, 17 , 0x000000);
 		_text = new TextField();
-		_text.defaultTextFormat = new TextFormat("Katamotz Ikasi", 30, 0x202020);
-		_text.x = 50;
-		_text.y = 50;
-		_text.width = 350;
-		_text.text = "Hello, Haxe and OpenFL!";
-		//addChild (_text);
-
+		_text.defaultTextFormat = textFieldFormat;
+		_text.x = px;
+		_text.y = py;
+		_text.width = w;
+		_text.height = 40;
+		_text.text = text;
+		_text.background = true;
+		_text.backgroundColor = 0x991155;
 		parent.addChild(_text);
 	}
 
-	public function addCallback(paren:Sprite, handler) {
-		paren.addEventListener(MouseEvent.CLICK, handler);
-	}
+	// public function addCallback(handler) {
+	// 	trace(_text.text);
+	// 	this.addEventListener(MouseEvent.CLICK, handler);
+	// }
 }
 
 class Main extends Sprite {
-	static public function drawPieces(canvas, offsetX, offsetY, glyphGap, gridGap, strokeSize) {
-		var pieces:Array<TriangleGliph> = [];
+	static public function clearCollection(canvas:Sprite, collection:Array<TriangleGliph>) {
+		for(glyph in collection) {
+			glyph.clean(canvas);
+		}
+	}
+
+	static public function drawPieces(canvas:Sprite, oX:Int, oY:Int, glyphGap:Int, gridGap:Int, strokeSize:Int):Array<TriangleGliph> {
+		var collection:Array<TriangleGliph> = [];
 		for(elm in 0...12) {
 			var glyph = new TriangleGliph();
-			glyph.setGrid(true);
-			glyph.setAlpha(1);
+			//glyph.setGrid(true);
+			glyph.setAlpha(0.75);
 			if(elm == 0 || elm == 1) {
 				glyph.setColor(0xDD8888);
 			} else {
 				glyph.setColor(0x00AAAA);
 			}
-			glyph.add(elm);
-			pieces.push(glyph);
+			glyph.addPieceByNum(elm);
+			collection.push(glyph);
 		}
 
 		var ii = 0;
 		var jj = 0;
-		for(glyph in pieces) {
-			var px = offsetX + ii * glyphGap;
-			var py = offsetY + jj * glyphGap;
+		for(glyph in collection) {
+			var px = oX + ii * glyphGap;
+			var py = oY + jj * glyphGap;
 			glyph.draw(canvas, px, py, gridGap, strokeSize);
 			ii = ii + 1;
 			if(ii > 3) {
@@ -357,43 +372,74 @@ class Main extends Sprite {
 				jj = jj + 1;
 			}
 		}
+
+		return collection;
 	}
 
-	static public function drawRandom(canvas, offsetX, offsetY, glyphGap, gridGap, strokeSize, nRows, nCols) {
+	static public function drawRandom(canvas:Sprite, oX:Int, oY:Int, glyphGap:Int, gridGap:Int, strokeSize:Int, nRows:Int, nCols:Int):Array<TriangleGliph> {
+		var collection:Array<TriangleGliph> = [];
 		for(ii in 0...nRows) {
-			var py = offsetY + ii * glyphGap;
+			var py = oY + ii * glyphGap;
 			for(jj in 0...nCols) {
-				var px = offsetX + jj * glyphGap;
+				var px = oX + jj * glyphGap;
 				var glyph = new TriangleGliph();
 				glyph.setGrid(false);
 				glyph.setColor(0x222222);
 				glyph.setAlpha(1);
 				glyph.generate();
 				glyph.draw(canvas, px, py, gridGap, strokeSize);
-				glyph.print();
+				collection.push(glyph);
 			}
 		}
+		return collection;
 	}
 
 
 
 	public function new() {
 		super();
+		this.mouseChildren = false;
+    	this.buttonMode = true;
 		init();
-		this.removeChild
 	}
 
 	public function init() {
+		var wall_x = 10;
+		var wall_y = 10;
 
 		//drawPieces(this, 10, 10, 50, 6, 2);
 
-		drawRandom(this, 10, 160, 50, 6, 2, 5, 10);
+		var randomWall = drawRandom(this, wall_x, wall_y, 50, 6, 2, 5, 10);
+		var piecesWall = [];
+		var alphabetWall = [];
 		function callbackDrawRandom(e:MouseEvent) {
-			drawRandom(this, 10, 160, 50, 6, 2, 5, 10);
+			trace("btnWall");
+			clearCollection(this, randomWall);
+			clearCollection(this, piecesWall);
+			clearCollection(this, alphabetWall);
+			randomWall = drawRandom(this, wall_x, wall_y, 50, 6, 2, 5, 10);
 		}
+		function callbackDrawPieces(e:MouseEvent) {
+			trace("btnPices");
+			clearCollection(this, randomWall);
+			clearCollection(this, piecesWall);
+			clearCollection(this, alphabetWall);
+			piecesWall = drawPieces(this, wall_x, wall_y, 50, 6, 2);
+		}
+		function callbackDrawAlphabet(e:MouseEvent) {
+			clearCollection(this, randomWall);
+			clearCollection(this, piecesWall);
+			clearCollection(this, alphabetWall);
+		}
+		
 
-		var x = new Button(this, 10, 250, "hello");
-		x.addCallback(this, callbackDrawRandom);
+		var btnWall = new Button(this, 70, 250, 175, "Random Wall");
+		var btnPices = new Button(this, 245, 250, 75, "Pieces");
+		var btnAlph = new Button(this, 320, 250, 115, "Alphabet");
+		btnWall.addEventListener(MouseEvent.CLICK, callbackDrawRandom);
+		btnPices.addEventListener(MouseEvent.CLICK, callbackDrawPieces);
+
+		
 
 	}
 }

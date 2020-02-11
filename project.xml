@@ -4,4 +4,5 @@
 	<app main="Main" path="Export" file="glyph" />
 	<source path="Source" />
 	<haxelib name="openfl" />
+	<assets path="assets/fonts" rename="fonts" if="html5" />
 </project>
