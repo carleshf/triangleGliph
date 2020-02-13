@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
-	<meta title="Glyph v1" package="com.sample.glyph" version="1.0.0" company="Company Name" />
-	<app main="Main" path="Export" file="glyph" />
+	
+	<meta title="TriangleGlyph" package="com.sample.triangleglyph" version="1.0.0" company="Company Name" />
+	<app main="Main" path="Export" file="TriangleGlyph" />
+	
 	<source path="Source" />
+	
 	<haxelib name="openfl" />
-	<assets path="assets/fonts" rename="fonts" if="html5" />
+	
+	<assets path="Assets" rename="assets" />
+	
 </project>
