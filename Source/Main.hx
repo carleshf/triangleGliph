@@ -353,8 +353,8 @@ class Button extends Sprite {
 		_text.width = w;
 		_text.height = 15;
 		_text.text = text;
-		_text.background = true;
-		_text.backgroundColor = 0xbc8f8f;
+		//_text.background = true;
+		//_text.backgroundColor = 0xbc8f8f;
 		this.addChild(_text);
 	}
 }
