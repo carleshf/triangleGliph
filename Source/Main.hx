@@ -396,7 +396,6 @@ class Main extends Sprite {
 	}
 
 	public function drawPieces(oX:Int, oY:Int, glyphGap:Int, gridGap:Int, strokeSize:Int, nCols:Int) {
-		trace("1.", _content.length);
 		for(elm in 0...12) {
 			var glyph = new TriangleGliph();
 			glyph.setGrid(true);
@@ -422,11 +421,9 @@ class Main extends Sprite {
 				jj = jj + 1;
 			}
 		}
-		trace("2.", _content.length);
 	}
 
 	public function drawRandom(oX:Int, oY:Int, glyphGap:Int, gridGap:Int, strokeSize:Int, nRows:Int, nCols:Int) {
-		trace("A.", _content.length);
 		for(ii in 0...nRows) {
 			var py = oY + ii * glyphGap;
 			for(jj in 0...nCols) {
@@ -440,7 +437,41 @@ class Main extends Sprite {
 				_content.push(glyph);
 			}
 		}
-		trace("B.", _content.length);
+	}
+
+	public function drawAlphabet(oX:Int, oY:Int, glyphGap:Int, gridGap:Int, strokeSize:Int, nChars:Int, nCols:Int) {
+		function isIn (array:Array<TriangleGliph>, item:TriangleGliph) {
+			for(glyph in array) {
+				if(glyph.isEquals(item)) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		while(_content.length < nChars) {
+			var glyph = new TriangleGliph();
+			glyph.generate();
+			if(!isIn(_content, glyph)) {
+				glyph.setGrid(false);
+				glyph.setColor(0xAAAAAA);
+				glyph.setAlpha(1);
+				_content.push(glyph);
+			}
+		}
+
+		var ii = 0;
+		var jj = 0;
+		for(elm in _content) {
+			var px = oX + ii * glyphGap;
+			var py = oY + jj * glyphGap;
+			elm.draw(this, px, py, gridGap, strokeSize);
+			ii = ii + 1;
+			if(ii >= nCols) {
+				ii = 0;
+				jj = jj + 1;
+			}
+		}
 	}
 	
 	public function clickWall(e:MouseEvent) {
@@ -458,5 +489,6 @@ class Main extends Sprite {
 	public function clickAlphabet(e:MouseEvent) {
 		trace("test alphabet");
 		clearCollection();
+		drawAlphabet(_offset_x + 35, _offset_y, 50, 6, 2, 25, 5);
 	}
 }
