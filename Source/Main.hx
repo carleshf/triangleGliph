@@ -307,6 +307,32 @@ class TriangleGliph	{
 	public function setAlpha(alpha) {
 		_alpha = alpha;
 	}
+
+	public function length():Int {
+		return _content.length;
+	}
+
+	public function content():Array<Int> {
+		return _content.map(function(x) return x);
+	}
+	
+	public function isEquals(b:TriangleGliph):Bool {
+		if(_content.length != b.length()) {
+			return false;
+		}
+		var len:Int = _content.length;
+		var acc:Int = 0;
+		var b_content:Array<Int> = b.content();
+		trace("len", len);
+		trace("acc", acc);
+		trace("b_content", b_content);
+		for(elm in _content) {
+			if(b_content.indexOf(elm) >= 0) {
+				acc = acc + 1;
+			}
+		}
+		return acc == len;
+	}
 }
 
 
@@ -318,21 +344,17 @@ class Button extends Sprite {
 		this.mouseChildren = false;
 		this.buttonMode = true;
 
-		this.graphics.beginFill(0xffffff);
-		this.graphics.drawRect(px, py, 40, 40);
-		this.graphics.endFill();
-
-		var textFieldFormat:TextFormat = new TextFormat(Assets.getFont("fonts/DANUBE__.TTF").fontName, 17 , 0x000000);
+		var textFieldFormat:TextFormat = new TextFormat(Assets.getFont("fonts/DANUBE__.TTF").fontName, 13, 0x000000);
 
 		_text = new TextField();
 		_text.defaultTextFormat = textFieldFormat;
 		_text.x = px;
 		_text.y = py;
 		_text.width = w;
-		_text.height = 40;
+		_text.height = 15;
 		_text.text = text;
 		_text.background = true;
-		_text.backgroundColor = 0x991155;
+		_text.backgroundColor = 0xbc8f8f;
 		this.addChild(_text);
 	}
 }
@@ -344,23 +366,23 @@ class Main extends Sprite {
 	private var _btnAlph:Button;
 	private var _content:Array<TriangleGliph>;
 
-	private var _wall_x = 10;
-	private var _wall_y = 10;
+	private var _offset_x = 10;
+	private var _offset_y = 10;
 	
 	public function new () {
 		super ();
-	
 		init();
+		drawRandom(_offset_x + 15, _offset_y, 50, 6, 2, 5, 6);
 	}
 	
 	public function init() {
 		_content = [];
-		_btnWall = new Button(this, 70, 250, 175, "Random Wall");
-		_btnPices = new Button(this, 245, 250, 75, "Pieces");
-		_btnAlph = new Button(this, 320, 250, 115, "Alphabet");
+		_btnWall = new Button(this, 90, 275, 130, "Random Wall");
+		_btnPices = new Button(this, 20, 275, 60, "Pieces");
+		_btnAlph = new Button(this, 230, 275, 90, "Alphabet");
 		_btnWall.addEventListener(MouseEvent.CLICK, clickWall);
 		_btnPices.addEventListener(MouseEvent.CLICK, clickPieces);
-		_btnAlph.addEventListener(MouseEvent.CLICK, click_b2);
+		_btnAlph.addEventListener(MouseEvent.CLICK, clickAlphabet);
 		addChild(_btnWall);
 		addChild(_btnPices);
 		addChild(_btnAlph);
@@ -370,10 +392,11 @@ class Main extends Sprite {
 		for(glyph in _content) {
 			glyph.clean(this);
 		}
+		_content = [];
 	}
 
 	public function drawPieces(oX:Int, oY:Int, glyphGap:Int, gridGap:Int, strokeSize:Int, nCols:Int) {
-		clearCollection();
+		trace("1.", _content.length);
 		for(elm in 0...12) {
 			var glyph = new TriangleGliph();
 			glyph.setGrid(true);
@@ -399,10 +422,11 @@ class Main extends Sprite {
 				jj = jj + 1;
 			}
 		}
+		trace("2.", _content.length);
 	}
 
 	public function drawRandom(oX:Int, oY:Int, glyphGap:Int, gridGap:Int, strokeSize:Int, nRows:Int, nCols:Int) {
-		clearCollection();
+		trace("A.", _content.length);
 		for(ii in 0...nRows) {
 			var py = oY + ii * glyphGap;
 			for(jj in 0...nCols) {
@@ -416,20 +440,23 @@ class Main extends Sprite {
 				_content.push(glyph);
 			}
 		}
+		trace("B.", _content.length);
 	}
 	
 	public function clickWall(e:MouseEvent) {
 		trace("click random wall");
-		drawRandom(_wall_x, _wall_y, 50, 6, 2, 5, 10);
+		clearCollection();
+		drawRandom(_offset_x + 15, _offset_y, 50, 6, 2, 5, 6);
 	}
 
 	public function clickPieces(e:MouseEvent) {
 		trace("click pieces");
-		drawPieces(_wall_x, _wall_y, 100, 10, 5, 5);
+		clearCollection();
+		drawPieces(_offset_x, _offset_y, 85, 10, 5, 3);
 	}
 
-	public function click_b2(e:MouseEvent) {
-		trace("test B2");
+	public function clickAlphabet(e:MouseEvent) {
+		trace("test alphabet");
+		clearCollection();
 	}
-	
 }
