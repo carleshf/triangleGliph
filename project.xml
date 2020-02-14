@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
 	
-	<meta title="TriangleGlyph" package="com.sample.triangleglyph" version="1.0.0" company="Company Name" />
+	<meta title="TriangleGlyph" package="com.sample.triangleglyph" version="1.0.0" company="Carles Hernandez-Ferrer" />
 	<app main="Main" path="Export" file="TriangleGlyph" />
 	
 	<source path="Source" />

@@ -373,6 +373,7 @@ class Main extends Sprite {
 		super ();
 		init();
 		drawRandom(_offset_x + 15, _offset_y, 50, 6, 2, 5, 6);
+		//colorsPalete(20, 20, [0xfff8db, 0xf78bc1, 0xAFD8DF, 0x000F55]);
 	}
 	
 	public function init() {
@@ -498,5 +499,19 @@ class Main extends Sprite {
 		trace("test alphabet");
 		clearCollection();
 		drawAlphabet(_offset_x + 35, _offset_y, 50, 6, 2, 25, 5);
+	}
+
+	public function colorsPalete(offsetX:Int, offsetY:Int, colors:Array<Int>) {
+		var ii = 0;
+		for(col in colors) {
+			var drawer = new Shape ();
+			drawer.graphics.beginFill(col, 1);
+
+			x = offsetX + ((50 + 10) * ii);
+			drawer.graphics.drawRect(x, offsetY, 50, 15);
+
+			this.addChild(drawer);
+			ii = ii + 1;
+		}
 	}
 }
