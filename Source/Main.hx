@@ -376,6 +376,7 @@ class Main extends Sprite {
 	}
 	
 	public function init() {
+		fillBackGround(0xfff8db, 340, 310);
 		_content = [];
 		_btnWall = new Button(this, 90, 275, 130, "Random Wall");
 		_btnPices = new Button(this, 20, 275, 60, "Pieces");
@@ -386,6 +387,12 @@ class Main extends Sprite {
 		addChild(_btnWall);
 		addChild(_btnPices);
 		addChild(_btnAlph);
+	}
+
+	public function fillBackGround(color:Int, w:Int, h:Int) {
+		this.graphics.beginFill(color);
+		this.graphics.drawRect(0, 0, w, h);
+		this.graphics.endFill();
 	}
 
 	public function clearCollection() {
@@ -400,11 +407,12 @@ class Main extends Sprite {
 			var glyph = new TriangleGliph();
 			glyph.setGrid(true);
 			glyph.setAlpha(0.75);
-			if(elm == 0 || elm == 1) {
-				glyph.setColor(0xDD8888);
+			glyph.setColor(0xf78bc1);
+			/*if(elm == 0 || elm == 1) {
+				glyph.setColor(0xf78bc1);
 			} else {
-				glyph.setColor(0x00AAAA);
-			}
+				glyph.setColor(0xc5dfcf);
+			}*/
 			glyph.addPieceByNum(elm);
 			_content.push(glyph);
 		}
@@ -430,7 +438,7 @@ class Main extends Sprite {
 				var px = oX + jj * glyphGap;
 				var glyph = new TriangleGliph();
 				glyph.setGrid(false);
-				glyph.setColor(0x222222);
+				glyph.setColor(0x000F55);
 				glyph.setAlpha(1);
 				glyph.generate();
 				glyph.draw(this, px, py, gridGap, strokeSize);
@@ -454,7 +462,7 @@ class Main extends Sprite {
 			glyph.generate();
 			if(!isIn(_content, glyph)) {
 				glyph.setGrid(false);
-				glyph.setColor(0xAAAAAA);
+				glyph.setColor(0xAFD8DF);
 				glyph.setAlpha(1);
 				_content.push(glyph);
 			}
