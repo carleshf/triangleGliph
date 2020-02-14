@@ -322,7 +322,10 @@ class Button extends Sprite {
 		this.graphics.drawRect(px, py, 40, 40);
 		this.graphics.endFill();
 
+		var textFieldFormat:TextFormat = new TextFormat(Assets.getFont("fonts/DANUBE__.TTF").fontName, 17 , 0x000000);
+
 		_text = new TextField();
+		_text.defaultTextFormat = textFieldFormat;
 		_text.x = px;
 		_text.y = py;
 		_text.width = w;
